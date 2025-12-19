@@ -1,0 +1,586 @@
+<!DOCTYPE html><html><head><title>checkout.html</title><style>/* Extinct Color Warfare Ecommerce Theme */
+:root {
+  --extinct-amber: #8B4513;
+  --psych-purple: #4B0082;
+  --flavor-red: #DC143C;
+  --void-black: #0A0A0A;
+  --fossil-gray: #696969;
+  --wage-white: #F5F5F5;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Courier New', monospace;
+  background: linear-gradient(45deg, var(--void-black), var(--psych-purple));
+  color: var(--wage-white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Glitch effect for headers */
+@keyframes glitch {
+  0% { text-shadow: 2px 2px var(--flavor-red), -2px -2px var(--extinct-amber); }
+  25% { text-shadow: -2px 2px var(--psych-purple), 2px -2px var(--flavor-red); }
+  50% { text-shadow: 2px -2px var(--extinct-amber), -2px 2px var(--psych-purple); }
+  75% { text-shadow: -2px -2px var(--flavor-red), 2px 2px var(--extinct-amber); }
+  100% { text-shadow: 2px 2px var(--psych-purple), -2px -2px var(--flavor-red); }
+}
+
+h1, h2, h3 {
+  animation: glitch 3s infinite;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+/* Navigation */
+nav {
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(10px);
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 2px solid var(--flavor-red);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--extinct-amber);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--wage-white);
+  text-decoration: none;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.nav-links a:hover {
+  color: var(--flavor-red);
+  transform: scale(1.1);
+}
+
+/* Product Grid */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.product-card {
+  background: rgba(75, 0, 130, 0.3);
+  border: 2px solid var(--extinct-amber);
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, var(--flavor-red), transparent);
+  transform: rotate(45deg);
+  transition: all 0.5s;
+  opacity: 0;
+}
+
+.product-card:hover::before {
+  animation: shimmer 0.5s;
+  opacity: 0.7;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(220, 20, 60, 0.5);
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, var(--fossil-gray), var(--psych-purple));
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+.product-title {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--extinct-amber);
+}
+
+.product-price {
+  font-size: 1.5rem;
+  color: var(--flavor-red);
+  font-weight: bold;
+}
+
+.add-to-cart {
+  background: var(--flavor-red);
+  color: var(--wage-white);
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 1rem;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.add-to-cart:hover {
+  background: var(--extinct-amber);
+  transform: scale(1.05);
+  box-shadow: 0 5px 20px rgba(220, 20, 60, 0.5);
+}
+
+/* Cart */
+.cart-icon {
+  position: relative;
+  cursor: pointer;
+}
+
+.cart-count {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: var(--flavor-red);
+  color: var(--wage-white);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+  
+  .product-grid {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Checkout Form */
+.checkout-form {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: rgba(75, 0, 130, 0.2);
+  border: 2px solid var(--extinct-amber);
+  border-radius: 10px;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--extinct-amber);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid var(--flavor-red);
+  color: var(--wage-white);
+  border-radius: 5px;
+}
+
+.checkout-btn {
+  background: linear-gradient(45deg, var(--flavor-red), var(--psych-purple));
+  color: var(--wage-white);
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s;
+  width: 100%;
+}
+
+.checkout-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 40px rgba(220, 20, 60, 0.5);
+}
+/* Extinct Color Warfare Ecommerce Theme */
+:root {
+  --extinct-amber: #8B4513;
+  --psych-purple: #4B0082;
+  --flavor-red: #DC143C;
+  --void-black: #0A0A0A;
+  --fossil-gray: #696969;
+  --wage-white: #F5F5F5;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Courier New', monospace;
+  background: linear-gradient(45deg, var(--void-black), var(--psych-purple));
+  color: var(--wage-white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Glitch effect for headers */
+@keyframes glitch {
+  0% { text-shadow: 2px 2px var(--flavor-red), -2px -2px var(--extinct-amber); }
+  25% { text-shadow: -2px 2px var(--psych-purple), 2px -2px var(--flavor-red); }
+  50% { text-shadow: 2px -2px var(--extinct-amber), -2px 2px var(--psych-purple); }
+  75% { text-shadow: -2px -2px var(--flavor-red), 2px 2px var(--extinct-amber); }
+  100% { text-shadow: 2px 2px var(--psych-purple), -2px -2px var(--flavor-red); }
+}
+
+h1, h2, h3 {
+  animation: glitch 3s infinite;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+/* Navigation */
+nav {
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(10px);
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 2px solid var(--flavor-red);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--extinct-amber);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--wage-white);
+  text-decoration: none;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.nav-links a:hover {
+  color: var(--flavor-red);
+  transform: scale(1.1);
+}
+
+/* Product Grid */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.product-card {
+  background: rgba(75, 0, 130, 0.3);
+  border: 2px solid var(--extinct-amber);
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, var(--flavor-red), transparent);
+  transform: rotate(45deg);
+  transition: all 0.5s;
+  opacity: 0;
+}
+
+.product-card:hover::before {
+  animation: shimmer 0.5s;
+  opacity: 0.7;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(220, 20, 60, 0.5);
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, var(--fossil-gray), var(--psych-purple));
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+.product-title {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--extinct-amber);
+}
+
+.product-price {
+  font-size: 1.5rem;
+  color: var(--flavor-red);
+  font-weight: bold;
+}
+
+.add-to-cart {
+  background: var(--flavor-red);
+  color: var(--wage-white);
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 1rem;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.add-to-cart:hover {
+  background: var(--extinct-amber);
+  transform: scale(1.05);
+  box-shadow: 0 5px 20px rgba(220, 20, 60, 0.5);
+}
+
+/* Cart */
+.cart-icon {
+  position: relative;
+  cursor: pointer;
+}
+
+.cart-count {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: var(--flavor-red);
+  color: var(--wage-white);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+  
+  .product-grid {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Checkout Form */
+.checkout-form {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: rgba(75, 0, 130, 0.2);
+  border: 2px solid var(--extinct-amber);
+  border-radius: 10px;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--extinct-amber);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid var(--flavor-red);
+  color: var(--wage-white);
+  border-radius: 5px;
+}
+
+.checkout-btn {
+  background: linear-gradient(45deg, var(--flavor-red), var(--psych-purple));
+  color: var(--wage-white);
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s;
+  width: 100%;
+}
+
+.checkout-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 40px rgba(220, 20, 60, 0.5);
+}</style></head><body><nav>
+  <div class="nav-container">
+    <div class="logo">EXTINCT HUES</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#products">Products</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <div class="cart-icon">
+      🛒
+      <span class="cart-count">0</span>
+    </div>
+  </div>
+</nav>
+
+<section style="padding: 4rem 2rem;">
+  <h1 style="text-align: center; margin-bottom: 2rem;">SURRENDER YOUR ESSENCE</h1>
+  
+  <form class="checkout-form" onsubmit="processOrder(event)">
+    <div class="form-group">
+      <label>Full Legal Name (for the chromatic lawsuit)</label>
+      <input type="text" required="" placeholder="John Doe">
+    </div>
+    
+    <div class="form-group">
+      <label>Email (where we'll send the flavor police)</label>
+      <input type="email" required="" placeholder="john@example.com">
+    </div>
+    
+    <div class="form-group">
+      <label>Shipping Address (where colors go to haunt)</label>
+      <textarea required="" rows="3" placeholder="123 Colorless Lane, Void City, VC 66666"></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label>Credit Card Number (we accept colors as payment)</label>
+      <input type="text" required="" placeholder="1234-5678-9012-3456" pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}">
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+      <div class="form-group">
+        <label>Expiry</label>
+        <input type="text" placeholder="MM/YY" required="">
+      </div>
+      <div class="form-group">
+        <label>CVV (Color Verification Value)</label>
+        <input type="text" placeholder="123" required="">
+      </div>
+    </div>
+    
+    <div style="margin: 2rem 0; padding: 1rem; background: rgba(220, 20, 60, 0.2); border-radius: 5px;">
+      <label style="display: flex; align-items: center; gap: 0.5rem;">
+        <input type="checkbox" required="">
+        I consent to psychological warfare by extinct colors and waive my right to sue my own taste buds
+      </label>
+    </div>
+    
+    <button type="submit" class="checkout-btn">COMPLETE DUBIOUS TRANSACTION</button>
+  </form>
+</section></body></html>
