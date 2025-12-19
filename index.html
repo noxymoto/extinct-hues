@@ -598,14 +598,11 @@ nav {
                 box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
                 cursor: pointer; 
             }
-                
-                /* Export Helpers */
                 .relative-content { position: relative; z-index: 1; pointer-events: none; }
                 .relative-content > * { pointer-events: auto; }
             </style>
 </head>
-<body>
-    <nav>
+<body><nav>
   <div class="nav-container">
     <div class="logo">EXTINCT HUES</div>
     <ul class="nav-links">
@@ -672,25 +669,5 @@ nav {
     flavors might file restraining orders, and your taste buds could form a union. 
     Side effects include synesthetic hallucinations, chromatic paranoia, and the ability to taste ultraviolet light.
   </p>
-</section>
-    <script>
-
-
-            document.addEventListener('DOMContentLoaded', () => {
-                document.querySelectorAll('.slideshow-container').forEach(ss => {
-                    if(ss.dataset.autoplay === 'true') {
-                        const delay = parseInt(ss.dataset.interval) || 3000;
-                        setInterval(() => { 
-                            const active = ss.querySelector('.slide.active');
-                            if(active) {
-                                active.classList.remove('active');
-                                let next = active.nextElementSibling;
-                                if(!next || !next.classList.contains('slide')) next = ss.querySelector('.slide');
-                                if(next) next.classList.add('active');
-                            }
-                        }, delay);
-                    }
-                });
-            });</script>
-</body>
-</html>
+</section><script>
+</script></body></html>
