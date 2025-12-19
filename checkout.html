@@ -1,4 +1,65 @@
-<!DOCTYPE html><html><head><title>checkout.html</title><style>/* Extinct Color Warfare Ecommerce Theme */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>checkout.html</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Merriweather&family=Montserrat&family=Open+Sans&family=Playfair+Display&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+                
+    html, body { 
+        margin: 0; padding: 0; 
+        width: 100%; height: 100%; 
+        overflow-x: hidden;
+    }
+    #canvas-root { 
+        display: flex; 
+        flex-direction: column; 
+        min-height: 100vh; 
+        width: 100%; 
+        margin: 0; padding: 0;
+        position: relative; 
+    }
+    
+    /* --- STRUCTURA LAYOUT SYSTEM --- */
+    .row {
+        display: flex;
+        flex-wrap: wrap; /* Essential for mobile stacking */
+        width: 100%;
+        gap: 20px;       /* Default gap */
+        padding: 10px;
+        position: relative;
+    }
+    
+    .col {
+        flex: 1;
+        min-width: 250px; /* Forces stacking on mobile */
+        position: relative;
+        word-wrap: break-word;
+    }
+    
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        width: 100%;
+    }
+    
+    /* --- EDITOR VISIBILITY HELPERS (Optional: Only effective in Editor) --- */
+    /* This ensures empty columns don't collapse to 0 height */
+    .col:empty {
+        min-height: 50px; 
+    }
+
+    /* --- STANDARD RESETS --- */
+    section, header, footer, .main-header { flex-shrink: 0; width: 100%; }
+    footer { margin-top: auto; }
+    img, video, iframe { max-width: 100%; display: block; }
+    * { box-sizing: border-box; }
+    a { text-decoration: none; color: inherit; }
+
+                /* Extinct Color Warfare Ecommerce Theme */
 :root {
   --extinct-amber: #8B4513;
   --psych-purple: #4B0082;
@@ -260,6 +321,30 @@ nav {
 .checkout-btn:hover {
   transform: scale(1.02);
   box-shadow: 0 10px 40px rgba(220, 20, 60, 0.5);
+}
+                
+/* Cloudflare Worker Styles */
+[data-cf-worker] { 
+    position: relative !important; 
+    cursor: pointer !important;
+    overflow: visible !important;
+}
+[data-cf-worker]:not([data-cf-badge="false"])::after {
+    content: "☁️" !important; 
+    position: absolute !important; 
+    top: -5px !important; 
+    right: -5px !important;
+    background: #f38020 !important; 
+    color: white !important; 
+    border-radius: 50% !important; 
+    width: 16px !important; 
+    height: 16px !important;
+    font-size: 10px !important; 
+    display: flex !important; 
+    align-items: center !important; 
+    justify-content: center !important; 
+    pointer-events: none !important; 
+    z-index: 9999 !important;
 }
 /* Extinct Color Warfare Ecommerce Theme */
 :root {
@@ -523,7 +608,16 @@ nav {
 .checkout-btn:hover {
   transform: scale(1.02);
   box-shadow: 0 10px 40px rgba(220, 20, 60, 0.5);
-}</style></head><body><nav>
+}
+                
+                
+                /* Export Helpers */
+                .relative-content { position: relative; z-index: 1; pointer-events: none; }
+                .relative-content > * { pointer-events: auto; }
+            </style>
+</head>
+<body>
+    <nav>
   <div class="nav-container">
     <div class="logo">EXTINCT HUES</div>
     <ul class="nav-links">
@@ -583,4 +677,33 @@ nav {
     
     <button type="submit" class="checkout-btn">COMPLETE DUBIOUS TRANSACTION</button>
   </form>
-</section></body></html>
+</section>
+       
+    
+    
+
+       
+    
+    
+
+    <script>
+
+
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelectorAll('.slideshow-container').forEach(ss => {
+                    if(ss.dataset.autoplay === 'true') {
+                        const delay = parseInt(ss.dataset.interval) || 3000;
+                        setInterval(() => { 
+                            const active = ss.querySelector('.slide.active');
+                            if(active) {
+                                active.classList.remove('active');
+                                let next = active.nextElementSibling;
+                                if(!next || !next.classList.contains('slide')) next = ss.querySelector('.slide');
+                                if(next) next.classList.add('active');
+                            }
+                        }, delay);
+                    }
+                });
+            });</script>
+</body>
+</html>
