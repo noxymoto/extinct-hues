@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>page5.html</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Merriweather&family=Montserrat&family=Open+Sans&family=Playfair+Display&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+                
+    html, body { 
+        margin: 0; padding: 0; 
+        width: 100%; height: 100%; 
+        overflow-x: hidden;
+    }
+    #canvas-root { 
+        display: flex; 
+        flex-direction: column; 
+        min-height: 100vh; 
+        width: 100%; 
+        margin: 0; padding: 0;
+        position: relative; 
+    }
+    
+    /* --- STRUCTURA LAYOUT SYSTEM --- */
+    .row {
+        display: flex;
+        flex-wrap: wrap; /* Essential for mobile stacking */
+        width: 100%;
+        gap: 20px;       /* Default gap */
+        padding: 10px;
+        position: relative;
+    }
+    
+    .col {
+        flex: 1;
+        min-width: 250px; /* Forces stacking on mobile */
+        position: relative;
+        word-wrap: break-word;
+    }
+    
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        width: 100%;
+    }
+    
+    /* --- EDITOR VISIBILITY HELPERS (Optional: Only effective in Editor) --- */
+    /* This ensures empty columns don't collapse to 0 height */
+    .col:empty {
+        min-height: 50px; 
+    }
+
+    /* --- STANDARD RESETS --- */
+    section, header, footer, .main-header { flex-shrink: 0; width: 100%; }
+    footer { margin-top: auto; }
+    img, video, iframe { max-width: 100%; display: block; }
+    * { box-sizing: border-box; }
+    a { text-decoration: none; color: inherit; }
+
+                :root {
+  --void-black: #0a0a0f;
+  --nebula-purple: #2d1b69;
+  --star-white: #e8e6ef;
+  --cosmic-blue: #1e3a8a;
+  --gravity-red: #dc2626;
+  --orb-size: 120px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: radial-gradient(ellipse at center, var(--void-black) 0%, var(--nebula-purple) 100%);
+  color: var(--star-white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.cosmic-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.story-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: fadeInDown 1.5s ease-out;
+}
+
+.deity-title {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--star-white), var(--cosmic-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+}
+
+.cosmic-subtitle {
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.story-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.gravity-well, .gravity-anomaly, .chaos-field, .equilibrium-field, .new-reality {
+  position: relative;
+  padding: 2rem;
+  border: 1px solid rgba(232, 230, 239, 0.1);
+  border-radius: 20px;
+  background: rgba(232, 230, 239, 0.05);
+  backdrop-filter: blur(10px);
+  margin-bottom: 2rem;
+}
+
+.floating-orb, .inverted-orb, .fragmented-orb, .balanced-orb, .transcendent-orb {
+  width: var(--orb-size);
+  height: var(--orb-size);
+  border-radius: 50%;
+  position: absolute;
+  top: -60px;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.floating-orb {
+  background: linear-gradient(135deg, var(--cosmic-blue), var(--nebula-purple));
+  animation: float 6s ease-in-out infinite;
+}
+
+.inverted-orb {
+  background: linear-gradient(135deg, var(--gravity-red), var(--nebula-purple));
+  animation: invertFloat 4s ease-in-out infinite;
+}
+
+.fragmented-orb {
+  background: linear-gradient(135deg, var(--gravity-red), #ff6b6b);
+  animation: fragment 2s ease-in-out infinite;
+}
+
+.balanced-orb {
+  background: linear-gradient(135deg, var(--star-white), var(--cosmic-blue));
+  animation: balance 3s ease-in-out infinite;
+}
+
+.transcendent-orb {
+  background: linear-gradient(135deg, var(--star-white), var(--nebula-purple), var(--cosmic-blue));
+  animation: transcend 5s ease-in-out infinite;
+}
+
+.floating-orb::after, .inverted-orb::after, .fragmented-orb::after, .balanced-orb::after, .transcendent-orb::after {
+  content: attr(data-text);
+  position: absolute;
+  color: var(--star-white);
+}
+
+.opening-text, .reality-text, .paradox-text, .negotiation-text, .resolution-text {
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+  line-height: 1.8;
+  margin-top: 2rem;
+}
+
+.narrative-section {
+  animation: fadeInUp 1.5s ease-out 0.5s both;
+}
+
+.section-title {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  margin-bottom: 1rem;
+  color: var(--cosmic-blue);
+}
+
+.narrative-section p {
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.cosmic-link {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  background: linear-gradient(135deg, var(--cosmic-blue), var(--nebula-purple));
+  color: var(--star-white);
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.cosmic-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(30, 58, 138, 0.4);
+  border-color: var(--star-white);
+}
+
+.page-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  gap: 1rem;
+}
+
+.page-nav .cosmic-link {
+  flex: 1;
+  text-align: center;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+@keyframes invertFloat {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(20px) scale(1.2); }
+}
+
+@keyframes fragment {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(0.8) rotate(180deg); opacity: 0.7; }
+}
+
+@keyframes balance {
+  0%, 100% { transform: translateX(0px); }
+  50% { transform: translateX(10px); }
+}
+
+@keyframes transcend {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  33% { transform: scale(1.1) rotate(120deg); }
+  66% { transform: scale(0.9) rotate(240deg); }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --orb-size: 80px;
+  }
+  
+  .cosmic-container {
+    padding: 1.5rem;
+  }
+  
+  .floating-orb, .inverted-orb, .fragmented-orb, .balanced-orb, .transcendent-orb {
+    top: -40px;
+    right: 1rem;
+  }
+  
+  .page-nav {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .deity-title {
+    letter-spacing: 0.1em;
+  }
+  
+  .gravity-well, .gravity-anomaly, .chaos-field, .equilibrium-field, .new-reality {
+    padding: 1.5rem;
+  }
+}
+                :root {
+  --void-black: #0a0a0f;
+  --nebula-purple: #2d1b69;
+  --star-white: #e8e6ef;
+  --cosmic-blue: #1e3a8a;
+  --gravity-red: #dc2626;
+  --orb-size: 120px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: radial-gradient(ellipse at center, var(--void-black) 0%, var(--nebula-purple) 100%);
+  color: var(--star-white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.cosmic-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.story-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: fadeInDown 1.5s ease-out;
+}
+
+.deity-title {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--star-white), var(--cosmic-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+}
+
+.cosmic-subtitle {
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.story-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.gravity-well, .gravity-anomaly, .chaos-field, .equilibrium-field, .new-reality {
+  position: relative;
+  padding: 2rem;
+  border: 1px solid rgba(232, 230, 239, 0.1);
+  border-radius: 20px;
+  background: rgba(232, 230, 239, 0.05);
+  backdrop-filter: blur(10px);
+  margin-bottom: 2rem;
+}
+
+.floating-orb, .inverted-orb, .fragmented-orb, .balanced-orb, .transcendent-orb {
+  width: var(--orb-size);
+  height: var(--orb-size);
+  border-radius: 50%;
+  position: absolute;
+  top: -60px;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.floating-orb {
+  background: linear-gradient(135deg, var(--cosmic-blue), var(--nebula-purple));
+  animation: float 6s ease-in-out infinite;
+}
+
+.inverted-orb {
+  background: linear-gradient(135deg, var(--gravity-red), var(--nebula-purple));
+  animation: invertFloat 4s ease-in-out infinite;
+}
+
+.fragmented-orb {
+  background: linear-gradient(135deg, var(--gravity-red), #ff6b6b);
+  animation: fragment 2s ease-in-out infinite;
+}
+
+.balanced-orb {
+  background: linear-gradient(135deg, var(--star-white), var(--cosmic-blue));
+  animation: balance 3s ease-in-out infinite;
+}
+
+.transcendent-orb {
+  background: linear-gradient(135deg, var(--star-white), var(--nebula-purple), var(--cosmic-blue));
+  animation: transcend 5s ease-in-out infinite;
+}
+
+.floating-orb::after, .inverted-orb::after, .fragmented-orb::after, .balanced-orb::after, .transcendent-orb::after {
+  content: attr(data-text);
+  position: absolute;
+  color: var(--star-white);
+}
+
+.opening-text, .reality-text, .paradox-text, .negotiation-text, .resolution-text {
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+  line-height: 1.8;
+  margin-top: 2rem;
+}
+
+.narrative-section {
+  animation: fadeInUp 1.5s ease-out 0.5s both;
+}
+
+.section-title {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  margin-bottom: 1rem;
+  color: var(--cosmic-blue);
+}
+
+.narrative-section p {
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.cosmic-link {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  background: linear-gradient(135deg, var(--cosmic-blue), var(--nebula-purple));
+  color: var(--star-white);
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.cosmic-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(30, 58, 138, 0.4);
+  border-color: var(--star-white);
+}
+
+.page-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  gap: 1rem;
+}
+
+.page-nav .cosmic-link {
+  flex: 1;
+  text-align: center;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+@keyframes invertFloat {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(20px) scale(1.2); }
+}
+
+@keyframes fragment {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(0.8) rotate(180deg); opacity: 0.7; }
+}
+
+@keyframes balance {
+  0%, 100% { transform: translateX(0px); }
+  50% { transform: translateX(10px); }
+}
+
+@keyframes transcend {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  33% { transform: scale(1.1) rotate(120deg); }
+  66% { transform: scale(0.9) rotate(240deg); }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --orb-size: 80px;
+  }
+  
+  .cosmic-container {
+    padding: 1.5rem;
+  }
+  
+  .floating-orb, .inverted-orb, .fragmented-orb, .balanced-orb, .transcendent-orb {
+    top: -40px;
+    right: 1rem;
+  }
+  
+  .page-nav {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .deity-title {
+    letter-spacing: 0.1em;
+  }
+  
+  .gravity-well, .gravity-anomaly, .chaos-field, .equilibrium-field, .new-reality {
+    padding: 1.5rem;
+  }
+}
+                
+                .relative-content { position: relative; z-index: 1; pointer-events: none; }
+                .relative-content > * { pointer-events: auto; }
+            </style>
+</head>
+<body><div class="cosmic-container">
+  <header class="story-header">
+    <h1 class="deity-title">The Resolution</h1>
+    <p class="cosmic-subtitle">Final Chapter: A new gravity</p>
+  </header>
+  
+  <main class="story-content">
+    <div class="new-reality">
+      <div class="transcendent-orb" data-text="AFTER"></div>
+      <p class="resolution-text">They reached a compromise. Gravity would remain, but with exceptions. In certain places—between heartbeats, in dreams, in the moment of artistic inspiration—the old ways would return. The deity would have its temples built from impossible architectures.</p>
+    </div>
+    
+    <section class="narrative-section">
+      <h2 class="section-title">The New Order</h2>
+      <p>Now, when objects occasionally fall upward or time flows in circles, physicists blame quantum fluctuations. But somewhere in the cosmic background radiation, the forgotten deity smiles. Gravity keeps its meaning, but meaning itself has become more flexible...</p>
+      <div class="page-nav">
+        <a href="page4.html" class="cosmic-link">← Previous</a>
+        <a href="index.html" class="cosmic-link">Restart Story →</a>
+      </div>
+    </section>
+  </main>
+</div><script>
+</script></body></html>
